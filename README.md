@@ -15,13 +15,15 @@ I've also found that some implementations of `mail` won't play nice with
 it. The following code doesn't work with the `mail` implementation
 provided by the `mailx` package:
 
-    echo -e "A new /tmp/ip.txt file was created @ "$HOSTNAME"\
-      \nYour current IP is $IP" | mail -s "IP report" "$EMAIL_ADDR" || { \
-        # or (||), if mail fails, exit with error code > 0 and schedule to run
-        # again in 30 minutes
-        echo "$(pwd)/$(basename $0)" | at now + 30 minutes 2> /dev/null;
-        echo "Running again in 30 minutes"; 
-        exit 1; }
+```bash
+echo -e "A new /tmp/ip.txt file was created @ "$HOSTNAME"\
+  \nYour current IP is $IP" | mail -s "IP report" "$EMAIL_ADDR" || { \
+    # or (||), if mail fails, exit with error code > 0 and schedule to run
+    # again in 30 minutes
+    echo "$(pwd)/$(basename $0)" | at now + 30 minutes 2> /dev/null;
+    echo "Running again in 30 minutes"; 
+    exit 1; }
+```
 
 I haven't done extensive research as to the reason why this happens, but
 apparently it's because the implementation of `mail` provided by `mailx`
